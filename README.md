@@ -31,7 +31,17 @@ address = %Payments.Address{street1: "123 Main",
                             country: "US",
                             postal_code: "11111"}
 
-Payments.authorize(:my_gateway, 199.95, card, billing_address: address, description: "Amazing T-Shirt")
+case Payments.authorize(:my_gateway, 199.95, card, billing_address: address,
+                                                   description: "Amazing T-Shirt") do
+  {:ok, authorization, _data} ->
+    IO.puts("Payment authorized #{authorization}")
+
+  {:error, {:declined, reason}, _data} ->
+    IO.puts("Payment declined #{reason}")
+
+  {:error, error, _data} ->
+    IO.puts("Payment error #{error}")
+end
 ```
 
 ## Road Map
