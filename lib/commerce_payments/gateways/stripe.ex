@@ -53,7 +53,7 @@ defmodule Commerce.Payments.Gateways.Stripe do
     commit(:post, path, params, opts)
   end
 
-  def unstore(customer_id, opts) do
+  def unstore(customer_id, nil, opts) do
     commit(:delete, "customers/#{customer_id}", [], opts)
   end
 

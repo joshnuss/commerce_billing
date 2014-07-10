@@ -24,4 +24,24 @@ defmodule Commerce.Payments do
   def purchase(worker, amount, card, opts \\ []) do
     GenServer.call(worker, {:purchase, amount, card, opts})
   end
+
+  def capture(worker, id, opts \\ []) do
+    GenServer.call(worker, {:capture, id, opts})
+  end
+
+  def void(worker, id, opts \\ []) do
+    GenServer.call(worker, {:void, id, opts})
+  end
+
+  def refund(worker, amount, id, opts \\ []) do
+    GenServer.call(worker, {:refund, amount, id, opts})
+  end
+
+  def store(worker, card, opts \\ []) do
+    GenServer.call(worker, {:store, card, opts})
+  end
+
+  def unstore(worker, customer_id, card_id = nil, opts \\ []) do
+    GenServer.call(worker, {:unstore, customer_id, card_id, opts})
+  end
 end

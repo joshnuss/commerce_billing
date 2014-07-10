@@ -39,11 +39,6 @@ defmodule Commerce.Payments.Worker do
     {:reply, response, state}
   end
 
-  def handle_call({:unstore, customer_id, opts}, _from, state) do
-    response = state.gateway.unstore(customer_id, [{:config, state.config} | opts])
-    {:reply, response, state}
-  end
-
   def handle_call({:unstore, customer_id, card_id, opts}, _from, state) do
     response = state.gateway.unstore(customer_id, card_id, [{:config, state.config} | opts])
     {:reply, response, state}
