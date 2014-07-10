@@ -1,20 +1,20 @@
 defmodule Commerce.Payments.Gateways.Stripe do
   @base_url "https://api.stripe.com/v1"
-  @default_currency "USD"
 
   import Commerce.Payments.Gateways.Base
   alias Commerce.Payments.CreditCard
   alias Commerce.Payments.Address
 
-  def purchase(amount, card_or_id, opts \\ []) do
+  def purchase(amount, card_or_id, opts) do
     authorize(amount, card_or_id, [{:capture, true} | opts])
   end
 
-  def authorize(amount, card_or_id, opts \\ []) do
+  def authorize(amount, card_or_id, opts) do
+    config      = Keyword.fetch!(opts, :config)
     description = Keyword.get(opts, :description)
     address     = Keyword.get(opts, :billing_address)
     customer_id = Keyword.get(opts, :customer_id)
-    currency    = Keyword.get(opts, :currency, @default_currency)
+    currency    = Keyword.get(opts, :currency, config.currency)
     capture     = Keyword.get(opts, :capture, false)
 
     params = [capture: capture, description: description,
@@ -23,42 +23,42 @@ defmodule Commerce.Payments.Gateways.Stripe do
              card_params(card_or_id) ++
              address_params(address)
 
-    commit(:post, "charges", params)
+    commit(:post, "charges", params, opts)
   end
 
-  def capture(id, opts \\ []) do
+  def capture(id, opts) do
     amount = Keyword.get(opts, :amount)
 
     params = amount_params(amount)
 
-    commit(:post, "charges/#{id}/capture", params)
+    commit(:post, "charges/#{id}/capture", params, opts)
   end
 
-  def void(id, _opts \\ []) do
-    commit(:post, "charges/#{id}/refund")
+  def void(id, opts) do
+    commit(:post, "charges/#{id}/refund", opts)
   end
 
-  def refund(amount, id, _opts \\ []) do
+  def refund(amount, id, opts) do
     params = amount_params(amount)
 
-    commit(:post, "charges/#{id}/refund", params)
+    commit(:post, "charges/#{id}/refund", params, opts)
   end
   
-  def store(card=%CreditCard{}, opts \\ []) do
+  def store(card=%CreditCard{}, opts) do
     customer_id = Keyword.get(opts, :customer_id)
     params = card_params(card)
 
     path = if customer_id, do: "customers/#{customer_id}/card", else: "customers"
 
-    commit(:post, path, params)
+    commit(:post, path, params, opts)
   end
 
-  def unstore(customer_id) do
-    commit(:delete, "customers/#{customer_id}")
+  def unstore(customer_id, opts) do
+    commit(:delete, "customers/#{customer_id}", [], opts)
   end
 
-  def unstore(customer_id, card_id) do
-    commit(:delete, "customers/#{customer_id}/#{card_id}")
+  def unstore(customer_id, card_id, opts) do
+    commit(:delete, "customers/#{customer_id}/#{card_id}", [], opts)
   end
 
   defp amount_params(amount) do
@@ -88,8 +88,9 @@ defmodule Commerce.Payments.Gateways.Stripe do
 
   defp address_params(_), do: []
 
-  defp commit(method, path, params \\ []) do
-    http(method, "#{@base_url}/#{path}", params, credentials: {"sk_test_BQokikJOvBiI2HlWgH4olfQ2", ""})
+  defp commit(method, path, params \\ [], opts \\ []) do
+    config = Keyword.fetch!(opts, :config)
+    http(method, "#{@base_url}/#{path}", params, credentials: config.credentials)
     |> respond
   end
 
