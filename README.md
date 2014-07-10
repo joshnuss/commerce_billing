@@ -3,6 +3,14 @@ Commerce.Payments
 
 Payment processing library for Elixir. Based on [Shopify's](http://shopify.com) [ActiveMerchant](http://github.com/Shopify/active_merchant) ruby gem
 
+## Advantages of using Elixir for payment processing
+
+- **Fault tolerant**: Each worker is supervised, so guarenteed to never die. Network errors are caught and payment is retried.
+- **Distributed**: Run workers on different machines.
+- **Scalable**: Run multiple workers and adjust number of workers as needed.
+- **Throughput**: Takes advantage of all cores. If you have a 16 CPU machine, you can process 16 payments at once.
+- **Hot code swap**: Update code while the system is running
+
 ## Example of processing a credit card
 
 ```elixir
