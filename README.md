@@ -3,8 +3,7 @@ Commerce.Payments
 
 Payment processing library for Elixir. Based on [Shopify's](http://shopify.com) [ActiveMerchant](http://github.com/Shopify/active_merchant) ruby gem
 
-Processing a Card
-=================
+## Example of processing a credit card
 
 ```elixir
 alias Commerce.Payments
@@ -27,11 +26,11 @@ address = %Payments.Address{street1: "123 Main",
 worker.authorize(199.95, card, billing_address: address, description: "Amazing T-Shirt")
 ```
 
-Road Map
-================
+## Road Map
 
 - Support multiple gateways (PayPal, Stripe, Authorize.net, Braintree etc..)
 - Support gateways that bill directly and those that use html integrations.
+- Support recurring billing
 - Each gateway is hosted in a worker process and supervised.
 - Workers can be pooled. (using poolboy)
 - Workers can be spread on multiple nodes
