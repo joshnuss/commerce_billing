@@ -1,33 +1,35 @@
 defmodule Commerce.Payments.Gateways.Base do
+  alias Commerce.Payments.Response
+
   @doc false
   defmacro __using__(_) do
     quote location: :keep do
       def purchase(_amount, _card_or_id, _opts)  do
-        {:error, :not_implemented, nil}
+        not_implemented
       end
 
       def authorize(_amount, _card_or_id, _opts)  do
-        {:error, :not_implemented, nil}
+        not_implemented
       end
 
       def capture(_id, _opts) do
-        {:error, :not_implemented, nil}
+        not_implemented
       end
 
       def void(_id, _opts) do
-        {:error, :not_implemented, nil}
+        not_implemented
       end
 
       def refund(_amount, _id, _opts) do
-        {:error, :not_implemented, nil}
+        not_implemented
       end
 
       def store(_card, _opts) do
-        {:error, :not_implemented, nil}
+        not_implemented
       end
 
       def unstore(_customer_id, _card_id, _opts) do
-        {:error, :not_implemented, nil}
+        not_implemented
       end
 
       defp http(method, path, params \\ [], opts \\ []) do
@@ -52,8 +54,12 @@ defmodule Commerce.Payments.Gateways.Base do
                |> Enum.join("&")
       end
 
+      @doc false
+      defp not_implemented do
+        {:error, Response.error(code: :not_implemented)}
+      end
+
       defoverridable [purchase: 3, authorize: 3, capture: 2, void: 2, refund: 3, store: 2, unstore: 3]
     end
   end
-
 end

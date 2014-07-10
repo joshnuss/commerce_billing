@@ -2,12 +2,13 @@ defmodule Commerce.Payments.Gateways.Bogus do
   use Commerce.Payments.Gateways.Base
 
   alias Commerce.Payments.CreditCard
+  alias Commerce.Payments.Response
 
-  def purchase(_amount, _card_or_id, _opts) do
+  def authorize(_amount, _card_or_id, _opts) do
     success
   end
 
-  def authorize(_amount, _card_or_id, _opts) do
+  def purchase(_amount, _card_or_id, _opts) do
     success
   end
 
@@ -36,11 +37,11 @@ defmodule Commerce.Payments.Gateways.Bogus do
   end
 
   defp success do
-    {:ok, random_string, %{}}
+    {:ok, Response.success(authorization: random_string)}
   end
 
   defp success(id) do
-    {:ok, id, %{}}
+    {:ok, Response.success(authorization: id)}
   end
 
   defp random_string(length \\ 10) do

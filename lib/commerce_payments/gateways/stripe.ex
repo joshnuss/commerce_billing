@@ -5,6 +5,7 @@ defmodule Commerce.Payments.Gateways.Stripe do
 
   alias Commerce.Payments.CreditCard
   alias Commerce.Payments.Address
+  alias Commerce.Payments.Response
 
   def purchase(amount, card_or_id, opts) do
     authorize(amount, card_or_id, [{:capture, true} | opts])
@@ -97,15 +98,17 @@ defmodule Commerce.Payments.Gateways.Stripe do
 
   defp respond(%{status_code: 200, body: body}) do
     data = Jazz.decode!(body)
-    {:ok, data["id"], data}
+    {:ok, Response.success(authorization: data["id"], raw: data)}
   end
 
   defp respond(%{body: body}) do
     data = Jazz.decode!(body)
-    {:error, error(data["error"]), data}
+    {code, reason} = error(data["error"])
+
+    {:error, Response.error(code: code, reason: reason, raw: data)}
   end
 
-  defp error(%{"type" => "invalid_request_error"}), do: :invalid_request
+  defp error(%{"type" => "invalid_request_error"}), do: {:invalid_request, nil}
   defp error(%{"code" => "incorrect_number"}),      do: {:declined, :invalid_number}
   defp error(%{"code" => "invalid_expiry_year"}),   do: {:declined, :invalid_expiration}
   defp error(%{"code" => "invalid_expiry_month"}),  do: {:declined, :invalid_expiration}

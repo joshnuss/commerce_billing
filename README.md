@@ -20,6 +20,7 @@ Payment processing library for Elixir. Based on [Shopify's](http://shopify.com) 
 
 ```elixir
 alias Commerce.Payments
+alias Commerce.Payments.Response
 
 config = %{credentials: {"sk_test_BQokikJOvBiI2HlWgH4olfQ2", ""},
            default_currency: "USD"}
@@ -39,13 +40,13 @@ address = %Payments.Address{street1: "123 Main",
 
 case Payments.authorize(:my_gateway, 199.95, card, billing_address: address,
                                                    description: "Amazing T-Shirt") do
-  {:ok, authorization, _response} ->
+  {:ok, %Response{authorization: authorization}} ->
     IO.puts("Payment authorized #{authorization}")
 
-  {:error, {:declined, reason}, _response} ->
+  {:error, %Response{code: :declined, reason: reason}} ->
     IO.puts("Payment declined #{reason}")
 
-  {:error, error, _response} ->
+  {:error, %Response{code: error}} ->
     IO.puts("Payment error #{error}")
 end
 ```
