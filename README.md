@@ -25,20 +25,20 @@ alias Commerce.Billing.Response
 config = %{credentials: {"sk_test_BQokikJOvBiI2HlWgH4olfQ2", ""},
            default_currency: "USD"}
 
-Payments.Worker.start_link(Payments.Gateways.Stripe, config, name: :my_gateway)
+Billing.Worker.start_link(Billing.Gateways.Stripe, config, name: :my_gateway)
 
-card = %Payments.CreditCard{name: "John Smith",
+card = %Billing.CreditCard{name: "John Smith",
                             number: "4242424242424242",
                             expiration: {2017, 12},
                             cvc: "123"}
 
-address = %Payments.Address{street1: "123 Main",
+address = %Billing.Address{street1: "123 Main",
                             city: "New York",
                             region: "NY",
                             country: "US",
                             postal_code: "11111"}
 
-case Payments.authorize(:my_gateway, 199.95, card, billing_address: address,
+case Billing.authorize(:my_gateway, 199.95, card, billing_address: address,
                                                    description: "Amazing T-Shirt") do
   {:ok, %Response{authorization: authorization}} ->
     IO.puts("Payment authorized #{authorization}")
