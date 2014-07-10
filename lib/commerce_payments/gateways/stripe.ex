@@ -1,7 +1,7 @@
 defmodule Commerce.Payments.Gateways.Stripe do
   @base_url "https://api.stripe.com/v1"
 
-  import Commerce.Payments.Gateways.Base
+  use Commerce.Payments.Gateways.Base
   alias Commerce.Payments.CreditCard
   alias Commerce.Payments.Address
 
@@ -43,7 +43,7 @@ defmodule Commerce.Payments.Gateways.Stripe do
 
     commit(:post, "charges/#{id}/refund", params, opts)
   end
-  
+
   def store(card=%CreditCard{}, opts) do
     customer_id = Keyword.get(opts, :customer_id)
     params = card_params(card)
@@ -88,7 +88,7 @@ defmodule Commerce.Payments.Gateways.Stripe do
 
   defp address_params(_), do: []
 
-  defp commit(method, path, params \\ [], opts \\ []) do
+  defp commit(method, path, params, opts \\ []) do
     config = Keyword.fetch!(opts, :config)
     http(method, "#{@base_url}/#{path}", params, credentials: config.credentials)
     |> respond
