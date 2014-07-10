@@ -2,6 +2,7 @@ defmodule Commerce.Payments.Gateways.Stripe do
   @base_url "https://api.stripe.com/v1"
 
   use Commerce.Payments.Gateways.Base
+
   alias Commerce.Payments.CreditCard
   alias Commerce.Payments.Address
 

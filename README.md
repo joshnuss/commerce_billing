@@ -5,6 +5,7 @@ Payment processing library for Elixir. Based on [Shopify's](http://shopify.com) 
 
 ## Supported Gateways
 
+- Bogus
 - Stripe
 
 ## Advantages of using Elixir
