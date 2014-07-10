@@ -18,10 +18,11 @@ alias Commerce.Payments
 
 credentials = {"sk_test_BQokikJOvBiI2HlWgH4olfQ2", ""}
 
-Payments.Worker.start_link(Payments.Gateways.Stripe, credentials: credentials, name: :my_gateway)
+Payments.Worker.start_link(Payments.Gateways.Stripe, %{credentials: credentials, currency: "USD"},
+                                                      name: :my_gateway)
 
 card = %Payments.CreditCard{name: "John Smith",
-                            number: "4111111111111111",
+                            number: "4242424242424242",
                             expiration: {2017, 12},
                             cvc: "123"}
 
@@ -33,13 +34,13 @@ address = %Payments.Address{street1: "123 Main",
 
 case Payments.authorize(:my_gateway, 199.95, card, billing_address: address,
                                                    description: "Amazing T-Shirt") do
-  {:ok, authorization, _data} ->
+  {:ok, authorization, _response} ->
     IO.puts("Payment authorized #{authorization}")
 
-  {:error, {:declined, reason}, _data} ->
+  {:error, {:declined, reason}, _response} ->
     IO.puts("Payment declined #{reason}")
 
-  {:error, error, _data} ->
+  {:error, error, _response} ->
     IO.puts("Payment error #{error}")
 end
 ```
