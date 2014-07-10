@@ -1,4 +1,5 @@
-%{"hackney": {:git, "git://github.com/benoitc/hackney.git", "fd2158b39b0aa139bb90f0c867f246ddfec072e6", []},
+%{"ex_doc": {:git, "git://github.com/elixir-lang/ex_doc.git", "ca71b84b9c3c7e23b4b661e485a909aee3fdbc3b", []},
+  "hackney": {:git, "git://github.com/benoitc/hackney.git", "fd2158b39b0aa139bb90f0c867f246ddfec072e6", []},
   "hackney_lib": {:git, "https://github.com/benoitc/hackney_lib.git", "48a5a3fc64892c95e4e3efdd464f26ca5683d2f9", [tag: "0.3.0"]},
   "httpoison": {:package, "0.3.0"},
   "idna": {:git, "git://github.com/benoitc/erlang-idna.git", "21aa158b7f36bf2a000f12fe40d7f21eece9cf65", [tag: "hackney-0.11.2"]},

@@ -28,6 +28,7 @@ defmodule Commerce.Payments.Mixfile do
   defp deps do
     [{:jazz, "~> 0.1.2"},
      {:httpoison, "~> 0.3.0"},
-     {:hackney, github: "benoitc/hackney"}]
+     {:hackney, github: "benoitc/hackney"},
+     {:ex_doc, github: "elixir-lang/ex_doc"}]
   end
 end
