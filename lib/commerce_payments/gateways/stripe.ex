@@ -108,7 +108,7 @@ defmodule Commerce.Payments.Gateways.Stripe do
     {:error, error(data["error"]), data}
   end
 
-  defp error(%{"type" => "invalid_request_error"}), do: {:declined, :invalid_request}
+  defp error(%{"type" => "invalid_request_error"}), do: :invalid_request
   defp error(%{"code" => "incorrect_number"}),      do: {:declined, :invalid_number}
   defp error(%{"code" => "invalid_expiry_year"}),   do: {:declined, :invalid_expiration}
   defp error(%{"code" => "invalid_expiry_month"}),  do: {:declined, :invalid_expiration}
