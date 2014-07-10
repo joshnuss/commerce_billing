@@ -10,7 +10,7 @@ alias Commerce.Payments
 
 credentials = {"sk_test_BQokikJOvBiI2HlWgH4olfQ2", ""}
 
-{:ok, worker} = Payments.Worker.start_link(Payments.Gateways.Stripe, credentials: credentials)
+Payments.Worker.start_link(Payments.Gateways.Stripe, credentials: credentials, name: :my_gateway)
 
 card = %Payments.CreditCard{name: "John Smith",
                             number: "4111111111111111",
@@ -23,7 +23,7 @@ address = %Payments.Address{street1: "123 Main",
                             country: "US",
                             postal_code: "11111"}
 
-worker.authorize(199.95, card, billing_address: address, description: "Amazing T-Shirt")
+Payments.authorize(:my_gateway, 199.95, card, billing_address: address, description: "Amazing T-Shirt")
 ```
 
 ## Road Map
