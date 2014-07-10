@@ -3,6 +3,20 @@ Commerce.Payments
 
 Payment processing library for Elixir. Based on [Shopify's](http://shopify.com) [ActiveMerchant](http://github.com/Shopify/active_merchant) ruby gem
 
+Processing a Card
+=================
+
+```elixir
+alias Commerce.Payments
+
+{:ok, worker} = Payments.Worker.start_link(Payments.Gateways.Stripe, credentials: {"sk_test_BQokikJOvBiI2HlWgH4olfQ2", ""})
+
+card = %Payments.CreditCard{name: "John Smith", number: "4111111111111111", expiration: {2017, 12}, cvc: "123"}
+address = %Payments.Address{street1: "123 Main", city: "New York", region: "NY", country: "US", postal_code: "11111"}
+
+worker.authorize(199.95, card, billing_address: address, description: "Amazing T-Shirt")
+```
+
 Road Map
 ================
 
