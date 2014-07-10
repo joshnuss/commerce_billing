@@ -1,5 +1,5 @@
-defmodule Commerce.Payments.Gateways.Base do
-  alias Commerce.Payments.Response
+defmodule Commerce.Billing.Gateways.Base do
+  alias Commerce.Billing.Response
 
   @doc false
   defmacro __using__(_) do

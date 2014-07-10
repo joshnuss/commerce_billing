@@ -1,4 +1,4 @@
-defmodule Commerce.PaymentsTest do
+defmodule Commerce.BillingTest do
   use ExUnit.Case
 
   test "the truth" do

@@ -1,4 +1,4 @@
-Commerce.Payments
+Commerce.Billing
 =================
 
 Payment processing library for Elixir. Based on [Shopify's](http://shopify.com) [ActiveMerchant](http://github.com/Shopify/active_merchant) ruby gem
@@ -19,8 +19,8 @@ Payment processing library for Elixir. Based on [Shopify's](http://shopify.com) 
 ## Card processing example
 
 ```elixir
-alias Commerce.Payments
-alias Commerce.Payments.Response
+alias Commerce.Billing
+alias Commerce.Billing.Response
 
 config = %{credentials: {"sk_test_BQokikJOvBiI2HlWgH4olfQ2", ""},
            default_currency: "USD"}

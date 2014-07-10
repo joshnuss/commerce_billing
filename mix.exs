@@ -1,8 +1,8 @@
-defmodule Commerce.Payments.Mixfile do
+defmodule Commerce.Billing.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :commerce_payments,
+    [app: :commerce_billing,
      version: "0.0.1",
      elixir: "~> 0.14.2",
      deps: deps]
@@ -13,7 +13,7 @@ defmodule Commerce.Payments.Mixfile do
   # Type `mix help compile.app` for more information
   def application do
     [applications: [:httpoison],
-     mod: {Commerce.Payments, []}]
+     mod: {Commerce.Billing, []}]
   end
 
   # Dependencies can be hex.pm packages:

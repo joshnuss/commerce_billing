@@ -1,4 +1,4 @@
-defmodule Commerce.Payments.Worker do
+defmodule Commerce.Billing.Worker do
   use GenServer
 
   def start_link(gateway, config, opts \\ []) do

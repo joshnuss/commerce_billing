@@ -1,11 +1,11 @@
-defmodule Commerce.Payments.Gateways.Stripe do
+defmodule Commerce.Billing.Gateways.Stripe do
   @base_url "https://api.stripe.com/v1"
 
-  use Commerce.Payments.Gateways.Base
+  use Commerce.Billing.Gateways.Base
 
-  alias Commerce.Payments.CreditCard
-  alias Commerce.Payments.Address
-  alias Commerce.Payments.Response
+  alias Commerce.Billing.CreditCard
+  alias Commerce.Billing.Address
+  alias Commerce.Billing.Response
 
   def purchase(amount, card_or_id, opts) do
     authorize(amount, card_or_id, [{:capture, true} | opts])

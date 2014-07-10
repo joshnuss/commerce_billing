@@ -1,4 +1,4 @@
-defmodule Commerce.Payments.Response do
+defmodule Commerce.Billing.Response do
   defstruct [:success, :authorization, :code, :reason, :avs_result, :cvc_result, :raw]
 
   def success(opts \\ []) do
