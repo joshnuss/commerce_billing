@@ -1,7 +1,7 @@
 Commerce.Payments
 =================
 
-Payment processing library for Elixir. Based on [Shopify's](http://shopify.com) [ActiveMerchanti](http://github.com/Shopify/active_merchant) ruby gem
+Payment processing library for Elixir. Based on [Shopify's](http://shopify.com) [ActiveMerchant](http://github.com/Shopify/active_merchant) ruby gem
 
 Road Map
 ================
