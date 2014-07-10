@@ -8,7 +8,7 @@ Payment processing library for Elixir. Based on [Shopify's](http://shopify.com) 
 - **Fault tolerant**: Each worker is supervised, so guarenteed to never die. Network errors are caught and payment is retried.
 - **Distributed**: Run workers on different machines.
 - **Scalable**: Run multiple workers and adjust number of workers as needed.
-- **Throughput**: Takes advantage of all cores. If you have a machine with 16 cores, and each transaction takes ~1 second. You would be processing at ebay levels of 1.4M/day.
+- **Throughput**: Takes advantage of all cores. For example on my laptop with 4 cores (2 threads per core), I can do 100 authorizations with Stripe in 10 seconds. Thats 864,000 transactions per day. ebay does 1.4M/day.
 - **Hot code swap**: Update code while the system is running
 
 ## Card processing example
