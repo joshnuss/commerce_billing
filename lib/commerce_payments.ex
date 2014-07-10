@@ -16,4 +16,12 @@ defmodule Commerce.Payments do
     opts = [strategy: :one_for_one, name: Commerce.Payments.Supervisor]
     Supervisor.start_link(children, opts)
   end
+
+  def authorize(worker, amount, card, opts \\ []) do
+    GenServer.call(worker, {:authorize, amount, card, opts})
+  end
+
+  def purchase(worker, amount, card, opts \\ []) do
+    GenServer.call(worker, {:purchase, amount, card, opts})
+  end
 end
