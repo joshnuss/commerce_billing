@@ -16,10 +16,10 @@ Payment processing library for Elixir. Based on [Shopify's](http://shopify.com) 
 ```elixir
 alias Commerce.Payments
 
-credentials = {"sk_test_BQokikJOvBiI2HlWgH4olfQ2", ""}
+config = %{credentials: {"sk_test_BQokikJOvBiI2HlWgH4olfQ2", ""},
+           currency: "USD"}
 
-Payments.Worker.start_link(Payments.Gateways.Stripe, %{credentials: credentials, currency: "USD"},
-                                                      name: :my_gateway)
+Payments.Worker.start_link(Payments.Gateways.Stripe, config, name: :my_gateway)
 
 card = %Payments.CreditCard{name: "John Smith",
                             number: "4242424242424242",
