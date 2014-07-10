@@ -3,6 +3,10 @@ Commerce.Payments
 
 Payment processing library for Elixir. Based on [Shopify's](http://shopify.com) [ActiveMerchant](http://github.com/Shopify/active_merchant) ruby gem
 
+## Supported Gateways
+
+- Stripe
+
 ## Advantages of using Elixir
 
 - **Fault tolerant**: Each worker is supervised, so guarenteed to never die. Network errors are caught and payment is retried.
