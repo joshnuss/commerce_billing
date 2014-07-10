@@ -8,7 +8,7 @@ Payment processing library for Elixir. Based on [Shopify's](http://shopify.com) 
 - **Fault tolerant**: Each worker is supervised, so guarenteed to never die. Network errors are caught and payment is retried.
 - **Distributed**: Run workers on different machines.
 - **Scalable**: Run multiple workers and adjust number of workers as needed.
-- **Throughput**: Takes advantage of all cores. If you have a network of 4 machines with 8 cores each (32 cores total), and each transaction takes ~2 seconds. You would be processing ebay levels of transactions of 1.4M/day.
+- **Throughput**: Takes advantage of all cores. If you have a machine with 16 cores, and each transaction takes ~1 second. You would be processing at ebay levels of 1.4M/day.
 - **Hot code swap**: Update code while the system is running
 
 ## Card processing example
@@ -17,7 +17,7 @@ Payment processing library for Elixir. Based on [Shopify's](http://shopify.com) 
 alias Commerce.Payments
 
 config = %{credentials: {"sk_test_BQokikJOvBiI2HlWgH4olfQ2", ""},
-           currency: "USD"}
+           default_currency: "USD"}
 
 Payments.Worker.start_link(Payments.Gateways.Stripe, config, name: :my_gateway)
 

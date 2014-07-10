@@ -14,7 +14,7 @@ defmodule Commerce.Payments.Gateways.Stripe do
     description = Keyword.get(opts, :description)
     address     = Keyword.get(opts, :billing_address)
     customer_id = Keyword.get(opts, :customer_id)
-    currency    = Keyword.get(opts, :currency, config.currency)
+    currency    = Keyword.get(opts, :currency, config.default_currency)
     capture     = Keyword.get(opts, :capture, false)
 
     params = [capture: capture, description: description,
