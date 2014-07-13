@@ -101,18 +101,20 @@ defmodule Commerce.Billing.Gateways.Stripe do
     {:ok, Response.success(authorization: data["id"], raw: data)}
   end
 
-  defp respond(%{body: body}) do
+  defp respond(%{body: body, status_code: status_code}) do
     data = Jazz.decode!(body)
-    {code, reason} = error(data["error"])
+    {code, reason} = error(status_code, data["error"])
 
     {:error, Response.error(code: code, reason: reason, raw: data)}
   end
 
-  defp error(%{"type" => "invalid_request_error"}), do: {:invalid_request, nil}
-  defp error(%{"code" => "incorrect_number"}),      do: {:declined, :invalid_number}
-  defp error(%{"code" => "invalid_expiry_year"}),   do: {:declined, :invalid_expiration}
-  defp error(%{"code" => "invalid_expiry_month"}),  do: {:declined, :invalid_expiration}
-  defp error(%{"code" => "invalid_cvc"}),           do: {:declined, :invalid_cvc}
-  defp error(%{"code" => "rate_limit"}),            do: {:rate_limit, nil}
-  defp error(_), do: :unknown
+  defp error(status, _) when status >= 500,            do: {:server_error, nil}
+  defp error(_, %{"type" => "invalid_request_error"}), do: {:invalid_request, nil}
+  defp error(_, %{"code" => "incorrect_number"}),      do: {:declined, :invalid_number}
+  defp error(_, %{"code" => "invalid_expiry_year"}),   do: {:declined, :invalid_expiration}
+  defp error(_, %{"code" => "invalid_expiry_month"}),  do: {:declined, :invalid_expiration}
+  defp error(_, %{"code" => "invalid_cvc"}),           do: {:declined, :invalid_cvc}
+  defp error(_, %{"code" => "rate_limit"}),            do: {:rate_limit, nil}
+  defp error(_, %{"code" => "rate_limit"}),            do: {:rate_limit, nil}
+  defp error(_, _), do: :unknown
 end
