@@ -113,5 +113,6 @@ defmodule Commerce.Billing.Gateways.Stripe do
   defp error(%{"code" => "invalid_expiry_year"}),   do: {:declined, :invalid_expiration}
   defp error(%{"code" => "invalid_expiry_month"}),  do: {:declined, :invalid_expiration}
   defp error(%{"code" => "invalid_cvc"}),           do: {:declined, :invalid_cvc}
+  defp error(%{"code" => "rate_limit"}),            do: {:rate_limit, nil}
   defp error(_), do: :unknown
 end
