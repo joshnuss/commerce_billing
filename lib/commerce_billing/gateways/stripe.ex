@@ -1,6 +1,12 @@
 defmodule Commerce.Billing.Gateways.Stripe do
   @base_url "https://api.stripe.com/v1"
 
+  @cvc_code_translator %{
+    "pass" => "M",
+    "fail" => "N",
+    "unchecked" => "P"
+  }
+
   use Commerce.Billing.Gateways.Base
 
   alias Commerce.Billing.CreditCard
@@ -98,14 +104,23 @@ defmodule Commerce.Billing.Gateways.Stripe do
 
   defp respond(%{status_code: 200, body: body}) do
     data = Jazz.decode!(body)
-    {:ok, Response.success(authorization: data["id"], raw: data)}
+    cvc_result = verification_result(data)
+
+    {:ok, Response.success(authorization: data["id"], raw: data, cvc_result: cvc_result)}
   end
 
   defp respond(%{body: body, status_code: status_code}) do
     data = Jazz.decode!(body)
     {code, reason} = error(status_code, data["error"])
+    cvc_result = verification_result(data)
 
-    {:error, Response.error(code: code, reason: reason, raw: data)}
+    {:error, Response.error(code: code, reason: reason, raw: data, cvc_result: cvc_result)}
+  end
+
+  defp verification_result(data) do
+    cvc_result = data["card"]["cvc_check"]
+
+    @cvc_code_translator[cvc_result]
   end
 
   defp error(status, _) when status >= 500,            do: {:server_error, nil}
