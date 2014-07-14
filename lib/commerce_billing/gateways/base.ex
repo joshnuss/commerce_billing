@@ -50,8 +50,7 @@ defmodule Commerce.Billing.Gateways.Base do
 
       defp params_to_string(params) do
         params |> Enum.filter(fn {_k, v} -> v != nil end)
-               |> Enum.map(fn {k, v} -> "#{k}=#{v}" end)
-               |> Enum.join("&")
+               |> URI.encode_query
       end
 
       @doc false
