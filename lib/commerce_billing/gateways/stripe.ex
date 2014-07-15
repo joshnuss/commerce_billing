@@ -53,7 +53,7 @@ defmodule Commerce.Billing.Gateways.Stripe do
   end
 
   def void(id, opts) do
-    commit(:post, "charges/#{id}/refund", opts)
+    commit(:post, "charges/#{id}/refund", [], opts)
   end
 
   def refund(amount, id, opts) do

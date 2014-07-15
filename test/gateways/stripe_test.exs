@@ -128,4 +128,32 @@ defmodule Commerce.Billing.Gateways.StripeTest do
       assert authorization == "1234"
     end
   end
+
+  test "void success", %{config: config} do
+    raw = ~S/{"id": "1234"}/
+
+    with_request "https://api.stripe.com/v1/charges/1234/refund", {200, raw},
+        response = Gateway.void(1234, config: config) do
+
+      {:ok, %Response{authorization: authorization, success: success}} = response
+
+      assert success
+      assert params["amount"] == nil
+      assert authorization == "1234"
+    end
+  end
+
+  test "refund success", %{config: config} do
+    raw = ~S/{"id": "1234"}/
+
+    with_request "https://api.stripe.com/v1/charges/1234/refund", {200, raw},
+        response = Gateway.refund(19.95, 1234, config: config) do
+
+      {:ok, %Response{authorization: authorization, success: success}} = response
+
+      assert success
+      assert params["amount"] == "1995"
+      assert authorization == "1234"
+    end
+  end
 end
