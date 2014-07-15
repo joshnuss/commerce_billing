@@ -8,7 +8,7 @@ defmodule Commerce.Billing.Gateways.StripeTest do
   alias Commerce.Billing.Response
   alias Commerce.Billing.Gateways.Stripe, as: Gateway
 
-  defmacrop with_request(url, {status, response}, statement, [do: block]) do
+  defmacrop with_post(url, {status, response}, statement, do: block) do
     quote do
       {:ok, agent} = Agent.start_link(fn -> nil end)
 
@@ -25,6 +25,16 @@ defmodule Commerce.Billing.Gateways.StripeTest do
 
         Agent.stop(agent)
       end
+    end
+  end
+
+  defmacrop with_delete(url, {status, response}, do: block) do
+    quote do
+      requestFn = fn(:delete, unquote(url), params, [{"Content-Type", "application/x-www-form-urlencoded"}], [hackney: [basic_auth: {'user', 'pass'}]]) ->
+        %{status_code: unquote(status), body: unquote(response)}
+      end
+
+      with_mock HTTPoison, [request: requestFn], do: unquote(block)
     end
   end
 
@@ -47,7 +57,7 @@ defmodule Commerce.Billing.Gateways.StripeTest do
     card = %CreditCard{name: "John Smith", number: "123456", cvc: "123", expiration: {2015, 11}}
     address = %Address{street1: "123 Main", street2: "Suite 100", city: "New York", region: "NY", country: "US", postal_code: "11111"}
 
-    with_request "https://api.stripe.com/v1/charges", {200, raw},
+    with_post "https://api.stripe.com/v1/charges", {200, raw},
         response = Gateway.authorize(10.95, card, billing_address: address, config: config) do
 
       {:ok, %Response{authorization: authorization, success: success,
@@ -88,7 +98,7 @@ defmodule Commerce.Billing.Gateways.StripeTest do
     card = %CreditCard{name: "John Smith", number: "123456", cvc: "123", expiration: {2015, 11}}
     address = %Address{street1: "123 Main", street2: "Suite 100", city: "New York", region: "NY", country: "US", postal_code: "11111"}
 
-    with_request "https://api.stripe.com/v1/charges", {200, raw},
+    with_post "https://api.stripe.com/v1/charges", {200, raw},
         response = Gateway.purchase(10.95, card, billing_address: address, config: config) do
 
       {:ok, %Response{authorization: authorization, success: success,
@@ -118,7 +128,7 @@ defmodule Commerce.Billing.Gateways.StripeTest do
   test "capture success", %{config: config} do
     raw = ~S/{"id": "1234"}/
 
-    with_request "https://api.stripe.com/v1/charges/1234/capture", {200, raw},
+    with_post "https://api.stripe.com/v1/charges/1234/capture", {200, raw},
         response = Gateway.capture(1234, amount: 19.95, config: config) do
 
       {:ok, %Response{authorization: authorization, success: success}} = response
@@ -132,7 +142,7 @@ defmodule Commerce.Billing.Gateways.StripeTest do
   test "void success", %{config: config} do
     raw = ~S/{"id": "1234"}/
 
-    with_request "https://api.stripe.com/v1/charges/1234/refund", {200, raw},
+    with_post "https://api.stripe.com/v1/charges/1234/refund", {200, raw},
         response = Gateway.void(1234, config: config) do
 
       {:ok, %Response{authorization: authorization, success: success}} = response
@@ -146,7 +156,7 @@ defmodule Commerce.Billing.Gateways.StripeTest do
   test "refund success", %{config: config} do
     raw = ~S/{"id": "1234"}/
 
-    with_request "https://api.stripe.com/v1/charges/1234/refund", {200, raw},
+    with_post "https://api.stripe.com/v1/charges/1234/refund", {200, raw},
         response = Gateway.refund(19.95, 1234, config: config) do
 
       {:ok, %Response{authorization: authorization, success: success}} = response
@@ -161,7 +171,7 @@ defmodule Commerce.Billing.Gateways.StripeTest do
     raw = ~S/{"id": "1234"}/
     card = %CreditCard{name: "John Smith", number: "123456", cvc: "123", expiration: {2015, 11}}
 
-    with_request "https://api.stripe.com/v1/customers", {200, raw},
+    with_post "https://api.stripe.com/v1/customers", {200, raw},
         response = Gateway.store(card, config: config) do
 
       {:ok, %Response{authorization: authorization, success: success}} = response
@@ -180,7 +190,7 @@ defmodule Commerce.Billing.Gateways.StripeTest do
     raw = ~S/{"id": "1234"}/
     card = %CreditCard{name: "John Smith", number: "123456", cvc: "123", expiration: {2015, 11}}
 
-    with_request "https://api.stripe.com/v1/customers/1234/card", {200, raw},
+    with_post "https://api.stripe.com/v1/customers/1234/card", {200, raw},
         response = Gateway.store(card, customer_id: 1234, config: config) do
 
       {:ok, %Response{authorization: authorization, success: success}} = response
@@ -192,6 +202,22 @@ defmodule Commerce.Billing.Gateways.StripeTest do
       assert params["card[exp_year]"] == "2015"
       assert params["card[cvc]"] == "123"
       assert authorization == "1234"
+    end
+  end
+
+  test "unstore credit card", %{config: config} do
+    with_delete "https://api.stripe.com/v1/customers/123/456", {200, "{}"} do
+      {:ok, %Response{success: success}} = Gateway.unstore(123, 456, config: config)
+
+      assert success
+    end
+  end
+
+  test "unstore customer", %{config: config} do
+    with_delete "https://api.stripe.com/v1/customers/123", {200, "{}"} do
+      {:ok, %Response{success: success}} = Gateway.unstore(123, nil, config: config)
+
+      assert success
     end
   end
 end
