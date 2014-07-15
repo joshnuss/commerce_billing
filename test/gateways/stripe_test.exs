@@ -156,4 +156,42 @@ defmodule Commerce.Billing.Gateways.StripeTest do
       assert authorization == "1234"
     end
   end
+
+  test "store credit card without customer", %{config: config} do
+    raw = ~S/{"id": "1234"}/
+    card = %CreditCard{name: "John Smith", number: "123456", cvc: "123", expiration: {2015, 11}}
+
+    with_request "https://api.stripe.com/v1/customers", {200, raw},
+        response = Gateway.store(card, config: config) do
+
+      {:ok, %Response{authorization: authorization, success: success}} = response
+
+      assert success
+      assert params["card[name]"] == "John Smith"
+      assert params["card[number]"] == "123456"
+      assert params["card[exp_month]"] == "11"
+      assert params["card[exp_year]"] == "2015"
+      assert params["card[cvc]"] == "123"
+      assert authorization == "1234"
+    end
+  end
+
+  test "store credit card with customer", %{config: config} do
+    raw = ~S/{"id": "1234"}/
+    card = %CreditCard{name: "John Smith", number: "123456", cvc: "123", expiration: {2015, 11}}
+
+    with_request "https://api.stripe.com/v1/customers/1234/card", {200, raw},
+        response = Gateway.store(card, customer_id: 1234, config: config) do
+
+      {:ok, %Response{authorization: authorization, success: success}} = response
+
+      assert success
+      assert params["card[name]"] == "John Smith"
+      assert params["card[number]"] == "123456"
+      assert params["card[exp_month]"] == "11"
+      assert params["card[exp_year]"] == "2015"
+      assert params["card[cvc]"] == "123"
+      assert authorization == "1234"
+    end
+  end
 end
