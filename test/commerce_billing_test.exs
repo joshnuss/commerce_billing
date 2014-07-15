@@ -1,7 +1,8 @@
 defmodule Commerce.BillingTest do
   use ExUnit.Case
 
-  alias Commerce.Billing
+  alias Commerce.Billing.Worker
+  import Commerce.Billing
 
   defmodule FakeGateway do
     def authorize(100, :card, _) do
@@ -34,35 +35,35 @@ defmodule Commerce.BillingTest do
   end
 
   setup do
-    {:ok, worker} = Billing.Worker.start_link(FakeGateway, :config)
+    {:ok, worker} = Worker.start_link(FakeGateway, :config)
     {:ok, worker: worker}
   end
 
   test "authorization", %{worker: worker} do
-    assert Billing.authorize(worker, 100, :card, []) == :authorization_response
+    assert authorize(worker, 100, :card, []) == :authorization_response
   end
 
   test "purchase", %{worker: worker} do
-    assert Billing.purchase(worker, 100, :card, []) == :purchase_response
+    assert purchase(worker, 100, :card, []) == :purchase_response
   end
 
   test "capture", %{worker: worker} do
-    assert Billing.capture(worker, 1234, []) == :capture_response
+    assert capture(worker, 1234, []) == :capture_response
   end
 
   test "void", %{worker: worker} do
-    assert Billing.void(worker, 1234, []) == :void_response
+    assert void(worker, 1234, []) == :void_response
   end
 
   test "refund", %{worker: worker} do
-    assert Billing.refund(worker, 100, 1234, []) == :refund_response
+    assert refund(worker, 100, 1234, []) == :refund_response
   end
 
   test "store", %{worker: worker} do
-    assert Billing.store(worker, :card, []) == :store_response
+    assert store(worker, :card, []) == :store_response
   end
 
   test "unstore", %{worker: worker} do
-    assert Billing.unstore(worker, 123, 456, []) == :unstore_response
+    assert unstore(worker, 123, 456, []) == :unstore_response
   end
 end
