@@ -45,10 +45,10 @@ defmodule Commerce.Billing.Gateways.StripeTest do
       }
     /
     card = %CreditCard{name: "John Smith", number: "123456", cvc: "123", expiration: {2015, 11}}
-    address = %Address{}
+    address = %Address{street1: "123 Main", street2: "Suite 100", city: "New York", region: "NY", country: "US", postal_code: "11111"}
 
     with_request "https://api.stripe.com/v1/charges", {200, raw},
-        response = Gateway.authorize(10.95, card, address: address, config: config) do
+        response = Gateway.authorize(10.95, card, billing_address: address, config: config) do
 
       {:ok, %Response{authorization: authorization, success: success,
                       avs_result: avs_result, cvc_result: cvc_result}} = response
@@ -62,6 +62,12 @@ defmodule Commerce.Billing.Gateways.StripeTest do
       assert params["card[exp_month]"] == "11"
       assert params["card[exp_year]"] == "2015"
       assert params["card[cvc]"] == "123"
+      assert params["card[address_line1]"] == "123 Main"
+      assert params["card[address_line2]"] == "Suite 100"
+      assert params["card[address_city]"] == "New York"
+      assert params["card[address_state]"] == "NY"
+      assert params["card[address_country]"] == "US"
+      assert params["card[address_zip]"] == "11111"
       assert authorization == "1234"
       assert avs_result == "P"
       assert cvc_result == "M"
