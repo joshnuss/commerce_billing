@@ -1,7 +1,6 @@
 defmodule Commerce.Billing.Gateways.BogusTest do
   use ExUnit.Case
 
-  alias Commerce.Billing.CreditCard
   alias Commerce.Billing.Response
   alias Commerce.Billing.Gateways.Bogus, as: Gateway
 
