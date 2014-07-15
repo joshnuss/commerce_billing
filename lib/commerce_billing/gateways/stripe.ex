@@ -134,6 +134,8 @@ defmodule Commerce.Billing.Gateways.Stripe do
     {cvc_result, avs_result}
   end
 
+  defp verification_result(_), do: {"N","N"}
+
   defp error(status, _) when status >= 500,            do: {:server_error, nil}
   defp error(_, %{"type" => "invalid_request_error"}), do: {:invalid_request, nil}
   defp error(_, %{"code" => "incorrect_number"}),      do: {:declined, :invalid_number}
