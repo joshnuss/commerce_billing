@@ -114,4 +114,18 @@ defmodule Commerce.Billing.Gateways.StripeTest do
       assert cvc_result == "M"
     end
   end
+
+  test "capture success", %{config: config} do
+    raw = ~S/{"id": "1234"}/
+
+    with_request "https://api.stripe.com/v1/charges/1234/capture", {200, raw},
+        response = Gateway.capture(1234, amount: 19.95, config: config) do
+
+      {:ok, %Response{authorization: authorization, success: success}} = response
+
+      assert success
+      assert params["amount"] == "1995"
+      assert authorization == "1234"
+    end
+  end
 end
