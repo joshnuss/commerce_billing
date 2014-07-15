@@ -29,6 +29,7 @@ defmodule Commerce.Billing.Mixfile do
     [{:jazz, "~> 0.1.2"},
      {:httpoison, "~> 0.3.0"},
      {:hackney, github: "benoitc/hackney"},
-     {:ex_doc, github: "elixir-lang/ex_doc"}]
+     {:ex_doc, github: "elixir-lang/ex_doc"},
+     {:mock, github: "jjh42/mock"}]
   end
 end
