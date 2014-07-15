@@ -64,3 +64,6 @@ end
     - Use primary gateway (i.e PayPal), but when PayPal is erroring switch to secondary/backup gateway (i.e. Authorize.net)
     - Currency specific gateway, i.e. use one gateway type for USD another for CAD
 - Retry on network failure
+
+
+@joshnuss is a freelance software consultant. joshnuss@gmail.com
