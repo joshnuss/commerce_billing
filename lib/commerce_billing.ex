@@ -41,7 +41,7 @@ defmodule Commerce.Billing do
     GenServer.call(worker, {:store, card, opts})
   end
 
-  def unstore(worker, customer_id, card_id = nil, opts \\ []) do
+  def unstore(worker, customer_id, card_id, opts \\ []) do
     GenServer.call(worker, {:unstore, customer_id, card_id, opts})
   end
 end
