@@ -4,6 +4,12 @@ defmodule Commerce.Billing.Mixfile do
   def project do
     [app: :commerce_billing,
      version: "0.0.1",
+     description: "Credit card processing library",
+     package: [
+       contributors: ["Joshua Nussbaum"],
+       licenses: ["MIT"],
+       links: %{github: "https://github.com/joshnuss/commerce_billing"}
+     ],
      elixir: ">= 1.0.0",
      deps: deps]
   end
