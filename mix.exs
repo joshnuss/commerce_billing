@@ -4,7 +4,7 @@ defmodule Commerce.Billing.Mixfile do
   def project do
     [app: :commerce_billing,
      version: "0.0.1",
-     elixir: "~> 0.14.2",
+     elixir: ">= 1.0.0",
      deps: deps]
   end
 
@@ -26,10 +26,9 @@ defmodule Commerce.Billing.Mixfile do
   #
   # Type `mix help deps` for more examples and options
   defp deps do
-    [{:jazz, "~> 0.1.2"},
-     {:httpoison, "~> 0.3.0"},
-     {:hackney, github: "benoitc/hackney"},
-     {:ex_doc, github: "elixir-lang/ex_doc"},
-     {:mock, github: "jjh42/mock"}]
+    [{:jazz, ">= 0.2.0"},
+     {:httpoison, ">= 0.5.0"},
+     {:ex_doc, ">= 0.6.0"},
+     {:mock, ">= 0.1.0"}]
   end
 end
