@@ -8,9 +8,9 @@ Payment processing library for Elixir. Based on [Shopify's](http://shopify.com) 
 - Bogus
 - Stripe
 
-## Advantages of using Elixir
+## Advantages of Elixir
 
-- **Fault tolerant**: Each worker is supervised, so guarenteed to never die. Network errors are caught and payment is retried.
+- **Fault tolerant**: Each worker is supervised, so a new worker is started in the event of errors. Network errors are caught and payment is retried (not yet working).
 - **Distributed**: Run workers on different machines.
 - **Scalable**: Run multiple workers and adjust number of workers as needed.
 - **Throughput**: Takes advantage of all cores. For example on my laptop with 4 cores (2 threads per core), I can do 100 authorizations with Stripe in 10 seconds. Thats 864,000 transactions per day. ebay does 1.4M/day.
