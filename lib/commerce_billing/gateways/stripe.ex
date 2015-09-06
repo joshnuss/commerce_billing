@@ -106,7 +106,7 @@ defmodule Commerce.Billing.Gateways.Stripe do
 
   defp address_params(_), do: []
 
-  defp commit(method, path, params, opts \\ []) do
+  defp commit(method, path, params, opts) do
     config = Keyword.fetch!(opts, :config)
     http(method, "#{@base_url}/#{path}", params, credentials: config.credentials)
     |> respond
