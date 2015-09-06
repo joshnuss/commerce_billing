@@ -112,14 +112,14 @@ defmodule Commerce.Billing.Gateways.Stripe do
     |> respond
   end
 
-  defp respond(%{status_code: 200, body: body}) do
+  defp respond({:ok, %{status_code: 200, body: body}}) do
     data = Jazz.decode!(body)
     {cvc_result, avs_result} = verification_result(data)
 
     {:ok, Response.success(authorization: data["id"], raw: data, cvc_result: cvc_result, avs_result: avs_result)}
   end
 
-  defp respond(%{body: body, status_code: status_code}) do
+  defp respond({:ok, %{body: body, status_code: status_code}}) do
     data = Jazz.decode!(body)
     {code, reason} = error(status_code, data["error"])
     {cvc_result, avs_result} = verification_result(data)

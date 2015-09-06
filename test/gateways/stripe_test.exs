@@ -14,7 +14,7 @@ defmodule Commerce.Billing.Gateways.StripeTest do
 
       requestFn = fn(:post, unquote(url), params, [{"Content-Type", "application/x-www-form-urlencoded"}], [hackney: [basic_auth: {'user', 'pass'}]]) ->
         Agent.update(agent, fn(_) -> params end)
-        %{status_code: unquote(status), body: unquote(response)}
+        {:ok, %{status_code: unquote(status), body: unquote(response)}}
       end
 
       with_mock HTTPoison, [request: requestFn] do
@@ -31,7 +31,7 @@ defmodule Commerce.Billing.Gateways.StripeTest do
   defmacrop with_delete(url, {status, response}, do: block) do
     quote do
       requestFn = fn(:delete, unquote(url), params, [{"Content-Type", "application/x-www-form-urlencoded"}], [hackney: [basic_auth: {'user', 'pass'}]]) ->
-        %{status_code: unquote(status), body: unquote(response)}
+        {:ok, %{status_code: unquote(status), body: unquote(response)}}
       end
 
       with_mock HTTPoison, [request: requestFn], do: unquote(block)
