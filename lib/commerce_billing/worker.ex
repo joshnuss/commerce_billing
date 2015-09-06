@@ -2,10 +2,10 @@ defmodule Commerce.Billing.Worker do
   use GenServer
 
   def start_link(gateway, config, opts \\ []) do
-    GenServer.start_link(__MODULE__, {gateway, config}, opts)
+    GenServer.start_link(__MODULE__, [gateway, config], opts)
   end
 
-  def init({gateway, config}) do
+  def init([gateway, config]) do
     {:ok, %{config: config, gateway: gateway}}
   end
 
