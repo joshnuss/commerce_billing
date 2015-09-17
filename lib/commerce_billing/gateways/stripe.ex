@@ -39,10 +39,16 @@ defmodule Commerce.Billing.Gateways.Stripe do
               currency: currency, customer: customer_id] ++
              amount_params(amount) ++
              card_params(card_or_id) ++
-             address_params(address)
+             address_params(address) ++
+             connect_params(opts)
 
     commit(:post, "charges", params, opts)
   end
+
+  defp connect_params(opts) do
+    Keyword.take(opts, [:destination, :application_fee])
+  end
+  
 
   def capture(id, opts) do
     amount = Keyword.get(opts, :amount)
