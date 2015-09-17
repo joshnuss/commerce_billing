@@ -125,6 +125,51 @@ defmodule Commerce.Billing.Gateways.StripeTest do
     end
   end
 
+  test "purchase success with credit card to a Connect account", %{config: config} do
+    raw = ~S/
+      {
+        "id": "1234",
+        "card": {
+          "cvc_check": "pass",
+          "address_line1_check": "unchecked",
+          "address_zip_check": "pass"
+        }
+      }
+    /
+    card = %CreditCard{name: "John Smith", number: "123456", cvc: "123", expiration: {2015, 11}}
+    address = %Address{street1: "123 Main", street2: "Suite 100", city: "New York", region: "NY", country: "US", postal_code: "11111"}
+    destination = "stripe_id"
+    application_fee = 123
+
+    with_post "https://api.stripe.com/v1/charges", {200, raw},
+        response = Gateway.purchase(10.95, card, billing_address: address, config: config, destination: destination, application_fee: application_fee) do
+
+      {:ok, %Response{authorization: authorization, success: success,
+                      avs_result: avs_result, cvc_result: cvc_result}} = response
+
+      assert success
+      assert params["capture"] == "true"
+      assert params["currency"] == "USD"
+      assert params["amount"] == "1095"
+      assert params["card[name]"] == "John Smith"
+      assert params["card[number]"] == "123456"
+      assert params["card[exp_month]"] == "11"
+      assert params["card[exp_year]"] == "2015"
+      assert params["card[cvc]"] == "123"
+      assert params["card[address_line1]"] == "123 Main"
+      assert params["card[address_line2]"] == "Suite 100"
+      assert params["card[address_city]"] == "New York"
+      assert params["card[address_state]"] == "NY"
+      assert params["card[address_country]"] == "US"
+      assert params["card[address_zip]"] == "11111"
+      assert params["destination"] == destination
+      assert params["application_fee"] == "123"
+      assert authorization == "1234"
+      assert avs_result == "P"
+      assert cvc_result == "M"
+    end
+  end
+
   test "capture success", %{config: config} do
     raw = ~S/{"id": "1234"}/
 
