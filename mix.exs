@@ -3,7 +3,7 @@ defmodule Commerce.Billing.Mixfile do
 
   def project do
     [app: :commerce_billing,
-     version: "0.0.1",
+     version: "0.0.2",
      description: "Credit card processing library",
      package: [
        contributors: ["Joshua Nussbaum"],
