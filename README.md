@@ -66,4 +66,8 @@ end
 - Retry on network failure
 
 
+## License
+
+MIT
+
 @joshnuss is a freelance software consultant. joshnuss@gmail.com
