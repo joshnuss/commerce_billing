@@ -34,7 +34,7 @@ defmodule Commerce.Billing.Mixfile do
   defp deps do
     [{:jazz, ">= 0.2.0"},
      {:httpoison, ">= 0.7.1"},
-     {:ex_doc, ">= 0.6.0"},
-     {:mock, ">= 0.1.0"}]
+     {:ex_doc, ">= 0.6.0", only: :dev},
+     {:mock, ">= 0.1.0", only: :test}]
   end
 end
