@@ -25,9 +25,10 @@ defmodule Commerce.Billing.Gateways.Stripe do
     Response
   }
 
-  def purchase(amount, card_or_id, opts) do
-    authorize(amount, card_or_id, [{:capture, true} | opts])
-  end
+  import Jazz, only: [decode!: 1]
+
+  def purchase(amount, card_or_id, opts),
+    do: authorize(amount, card_or_id, [{:capture, true} | opts])
 
   def authorize(amount, card_or_id, opts) do
     config      = Keyword.fetch!(opts, :config)
@@ -47,22 +48,16 @@ defmodule Commerce.Billing.Gateways.Stripe do
     commit(:post, "charges", params, opts)
   end
 
-  defp connect_params(opts) do
-    Keyword.take(opts, [:destination, :application_fee])
-  end
-  
-
   def capture(id, opts) do
-    amount = Keyword.get(opts, :amount)
-
-    params = amount_params(amount)
+    params = opts
+      |> Keyword.get(:amount)
+      |> amount_params
 
     commit(:post, "charges/#{id}/capture", params, opts)
   end
 
-  def void(id, opts) do
-    commit(:post, "charges/#{id}/refund", [], opts)
-  end
+  def void(id, opts),
+    do: commit(:post, "charges/#{id}/refund", [], opts)
 
   def refund(amount, id, opts) do
     params = amount_params(amount)
@@ -79,17 +74,14 @@ defmodule Commerce.Billing.Gateways.Stripe do
     commit(:post, path, params, opts)
   end
 
-  def unstore(customer_id, nil, opts) do
-    commit(:delete, "customers/#{customer_id}", [], opts)
-  end
+  def unstore(customer_id, nil, opts),
+    do: commit(:delete, "customers/#{customer_id}", [], opts)
 
-  def unstore(customer_id, card_id, opts) do
-    commit(:delete, "customers/#{customer_id}/#{card_id}", [], opts)
-  end
+  def unstore(customer_id, card_id, opts),
+    do: commit(:delete, "customers/#{customer_id}/#{card_id}", [], opts)
 
-  defp amount_params(amount) do
-    [amount: money_to_cents(amount)]
-  end
+  defp amount_params(amount),
+    do: [amount: money_to_cents(amount)]
 
   defp card_params(card=%CreditCard{}) do
     {expiration_year, expiration_month} = card.expiration
@@ -114,21 +106,26 @@ defmodule Commerce.Billing.Gateways.Stripe do
 
   defp address_params(_), do: []
 
+  defp connect_params(opts),
+    do: Keyword.take(opts, [:destination, :application_fee])
+
   defp commit(method, path, params, opts) do
     config = Keyword.fetch!(opts, :config)
-    http(method, "#{@base_url}/#{path}", params, credentials: config.credentials)
-    |> respond
+
+    method
+      |> http("#{@base_url}/#{path}", params, credentials: config.credentials)
+      |> respond
   end
 
   defp respond({:ok, %{status_code: 200, body: body}}) do
-    data = Jazz.decode!(body)
+    data = decode!(body)
     {cvc_result, avs_result} = verification_result(data)
 
     {:ok, Response.success(authorization: data["id"], raw: data, cvc_result: cvc_result, avs_result: avs_result)}
   end
 
   defp respond({:ok, %{body: body, status_code: status_code}}) do
-    data = Jazz.decode!(body)
+    data = decode!(body)
     {code, reason} = error(status_code, data["error"])
     {cvc_result, avs_result} = verification_result(data)
 
