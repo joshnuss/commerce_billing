@@ -1,8 +1,10 @@
 defmodule Commerce.Billing.Gateways.Bogus do
   use Commerce.Billing.Gateways.Base
 
-  alias Commerce.Billing.CreditCard
-  alias Commerce.Billing.Response
+  alias Commerce.Billing.{
+    CreditCard,
+    Response
+  }
 
   def authorize(_amount, _card_or_id, _opts) do
     success

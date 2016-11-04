@@ -3,9 +3,11 @@ defmodule Commerce.Billing.Gateways.StripeTest do
 
   import Mock
 
-  alias Commerce.Billing.CreditCard
-  alias Commerce.Billing.Address
-  alias Commerce.Billing.Response
+  alias Commerce.Billing.{
+    CreditCard,
+    Address,
+    Response
+  }
   alias Commerce.Billing.Gateways.Stripe, as: Gateway
 
   defmacrop with_post(url, {status, response}, statement, do: block) do

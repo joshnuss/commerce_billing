@@ -19,9 +19,11 @@ defmodule Commerce.Billing.Gateways.Stripe do
 
   use Commerce.Billing.Gateways.Base
 
-  alias Commerce.Billing.CreditCard
-  alias Commerce.Billing.Address
-  alias Commerce.Billing.Response
+  alias Commerce.Billing.{
+    CreditCard,
+    Address,
+    Response
+  }
 
   def purchase(amount, card_or_id, opts) do
     authorize(amount, card_or_id, [{:capture, true} | opts])
