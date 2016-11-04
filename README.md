@@ -1,5 +1,7 @@
 Commerce.Billing
 =================
+[![Build Status](https://secure.travis-ci.org/joshnuss/commerce_billing.svg?branch=master
+"Build Status")](https://travis-ci.org/joshnuss/commerce_billing)
 
 Payment processing library for Elixir. Based on [Shopify's](http://shopify.com) [ActiveMerchant](http://github.com/Shopify/active_merchant) ruby gem
 
