@@ -1,6 +1,8 @@
 defmodule Commerce.Billing do
   use Application
 
+  import GenServer, only: [call: 2]
+
   # See http://elixir-lang.org/docs/stable/elixir/Application.html
   # for more information on OTP Applications
   def start(_type, _args) do
@@ -17,31 +19,24 @@ defmodule Commerce.Billing do
     Supervisor.start_link(children, opts)
   end
 
-  def authorize(worker, amount, card, opts \\ []) do
-    GenServer.call(worker, {:authorize, amount, card, opts})
-  end
+  def authorize(worker, amount, card, opts \\ []),
+    do: call(worker, {:authorize, amount, card, opts})
 
-  def purchase(worker, amount, card, opts \\ []) do
-    GenServer.call(worker, {:purchase, amount, card, opts})
-  end
+  def purchase(worker, amount, card, opts \\ []),
+    do: call(worker, {:purchase, amount, card, opts})
 
-  def capture(worker, id, opts \\ []) do
-    GenServer.call(worker, {:capture, id, opts})
-  end
+  def capture(worker, id, opts \\ []),
+    do: call(worker, {:capture, id, opts})
 
-  def void(worker, id, opts \\ []) do
-    GenServer.call(worker, {:void, id, opts})
-  end
+  def void(worker, id, opts \\ []),
+    do: call(worker, {:void, id, opts})
 
-  def refund(worker, amount, id, opts \\ []) do
-    GenServer.call(worker, {:refund, amount, id, opts})
-  end
+  def refund(worker, amount, id, opts \\ []),
+    do: call(worker, {:refund, amount, id, opts})
 
-  def store(worker, card, opts \\ []) do
-    GenServer.call(worker, {:store, card, opts})
-  end
+  def store(worker, card, opts \\ []),
+    do: call(worker, {:store, card, opts})
 
-  def unstore(worker, customer_id, card_id, opts \\ []) do
-    GenServer.call(worker, {:unstore, customer_id, card_id, opts})
-  end
+  def unstore(worker, customer_id, card_id, opts \\ []),
+    do: call(worker, {:unstore, customer_id, card_id, opts})
 end
