@@ -5,6 +5,9 @@ defmodule Commerce.BillingTest do
   import Commerce.Billing
 
   defmodule FakeGateway do
+    def init(config),
+      do: config
+  
     def authorize(100, :card, _) do
       :authorization_response
     end

@@ -4,6 +4,10 @@ defmodule Commerce.Billing.Gateways.Base do
   @doc false
   defmacro __using__(_) do
     quote location: :keep do
+      def init(_config) do
+        not_implemented
+      end
+    
       def purchase(_amount, _card_or_id, _opts)  do
         not_implemented
       end
@@ -58,7 +62,7 @@ defmodule Commerce.Billing.Gateways.Base do
         {:error, Response.error(code: :not_implemented)}
       end
 
-      defoverridable [purchase: 3, authorize: 3, capture: 2, void: 2, refund: 3, store: 2, unstore: 3]
+      defoverridable [init: 1, purchase: 3, authorize: 3, capture: 2, void: 2, refund: 3, store: 2, unstore: 3]
     end
   end
 end
