@@ -10,7 +10,7 @@ defmodule Commerce.Billing.Mixfile do
        licenses: ["MIT"],
        links: %{github: "https://github.com/joshnuss/commerce_billing"}
      ],
-     elixir: ">= 1.0.0",
+     elixir: ">= 1.2.0",
      deps: deps]
   end
 
