@@ -25,7 +25,7 @@ defmodule Commerce.Billing.Gateways.Stripe do
     Response
   }
 
-  import Jazz, only: [decode!: 1]
+  import Poison, only: [decode!: 1]
 
   def purchase(amount, card_or_id, opts),
     do: authorize(amount, card_or_id, [{:capture, true} | opts])

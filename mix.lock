@@ -1,8 +1,8 @@
 %{"ex_doc": {:hex, :ex_doc, "0.7.3", "8f52bfbfcbc0206dd08dd94aae86a3fd5330ba2f37c73cfea2918ed4c96d1769", [:mix], [{:earmark, "~> 0.1.17 or ~> 0.2", [hex: :earmark, optional: true]}]},
-  "hackney": {:hex, :hackney, "1.3.0", "3465b937a2ee45e743c3d4b44e0c8606eb377fd05c972899056f30b01aea69d6", [:rebar, :make], [{:idna, "~> 1.0.2", [hex: :idna, optional: false]}, {:ssl_verify_hostname, "~> 1.0.5", [hex: :ssl_verify_hostname, optional: false]}]},
+  "hackney": {:hex, :hackney, "1.3.0", "3465b937a2ee45e743c3d4b44e0c8606eb377fd05c972899056f30b01aea69d6", [:make, :rebar], [{:idna, "~> 1.0.2", [hex: :idna, optional: false]}, {:ssl_verify_hostname, "~> 1.0.5", [hex: :ssl_verify_hostname, optional: false]}]},
   "httpoison": {:hex, :httpoison, "0.7.1", "54105b19ca9b2d4d16afed7e6823ba0a304002cfd5677b0d8703eb40933b4680", [:mix], [{:hackney, "~> 1.3.0", [hex: :hackney, optional: false]}]},
   "idna": {:hex, :idna, "1.0.2", "397e3d001c002319da75759b0a81156bf11849c71d565162436d50020cb7265e", [:make], []},
-  "jazz": {:hex, :jazz, "0.2.1", "46cf8ed1bd8f02441d7870aae052c7dc0adcb722d7585c2f8824b30c4c34d100", [:mix], []},
   "meck": {:hex, :meck, "0.8.3", "4628a1334c69610c5bd558b04dc78d723d8ec5445c123856de34c77f462b5ee5", [:rebar], []},
   "mock": {:hex, :mock, "0.1.1", "e21469ca27ba32aa7b18b61699db26f7a778171b21c0e5deb6f1218a53278574", [:mix], [{:meck, "~> 0.8.2", [hex: :meck, optional: false]}]},
+  "poison": {:hex, :poison, "3.0.0", "625ebd64d33ae2e65201c2c14d6c85c27cc8b68f2d0dd37828fde9c6920dd131", [:mix], []},
   "ssl_verify_hostname": {:hex, :ssl_verify_hostname, "1.0.5", "2e73e068cd6393526f9fa6d399353d7c9477d6886ba005f323b592d389fb47be", [:make], []}}
