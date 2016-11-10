@@ -10,7 +10,7 @@ defmodule Commerce.Billing.Mixfile do
        licenses: ["MIT"],
        links: %{github: "https://github.com/joshnuss/commerce_billing"}
      ],
-     elixir: ">= 1.0.0",
+     elixir: ">= 1.2.0",
      deps: deps]
   end
 
@@ -33,7 +33,7 @@ defmodule Commerce.Billing.Mixfile do
   # Type `mix help deps` for more examples and options
   defp deps do
     [{:jazz, ">= 0.2.0"},
-     {:httpoison, ">= 0.7.1"},
+     {:httpoison, ">= 0.10.0"},
      {:ex_doc, ">= 0.6.0", only: :dev},
      {:mock, ">= 0.1.0", only: :test}]
   end
