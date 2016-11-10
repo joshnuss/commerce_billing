@@ -1,8 +1,9 @@
 defmodule Commerce.BillingTest do
   use ExUnit.Case
 
-  alias Commerce.Billing.Worker
   import Commerce.Billing
+
+  alias Commerce.Billing.Worker
 
   defmodule FakeGateway do
     def init(config),
