@@ -1,7 +1,7 @@
 defmodule Commerce.Billing.Gateways.Paypal do
   use Commerce.Billing.Gateways.Base
   
-  import Jazz, only: [decode!: 1]
+  import Poison, only: [decode!: 1]
   
   @base_url "https://api.sandbox.paypal.com/v1"
   

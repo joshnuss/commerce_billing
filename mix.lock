@@ -3,8 +3,6 @@
   "httpoison": {:hex, :httpoison, "0.7.1", "54105b19ca9b2d4d16afed7e6823ba0a304002cfd5677b0d8703eb40933b4680", [:mix], [{:hackney, "~> 1.3.0", [hex: :hackney, optional: false]}]},
   "idna": {:hex, :idna, "1.0.2", "397e3d001c002319da75759b0a81156bf11849c71d565162436d50020cb7265e", [:make], []},
   "meck": {:hex, :meck, "0.8.3", "4628a1334c69610c5bd558b04dc78d723d8ec5445c123856de34c77f462b5ee5", [:rebar], []},
-  "metrics": {:hex, :metrics, "1.0.1", "25f094dea2cda98213cecc3aeff09e940299d950904393b2a29d191c346a8486", [:rebar3], []},
-  "mimerl": {:hex, :mimerl, "1.0.2", "993f9b0e084083405ed8252b99460c4f0563e41729ab42d9074fd5e52439be88", [:rebar3], []},
   "mock": {:hex, :mock, "0.1.1", "e21469ca27ba32aa7b18b61699db26f7a778171b21c0e5deb6f1218a53278574", [:mix], [{:meck, "~> 0.8.2", [hex: :meck, optional: false]}]},
   "poison": {:hex, :poison, "3.0.0", "625ebd64d33ae2e65201c2c14d6c85c27cc8b68f2d0dd37828fde9c6920dd131", [:mix], []},
   "ssl_verify_hostname": {:hex, :ssl_verify_hostname, "1.0.5", "2e73e068cd6393526f9fa6d399353d7c9477d6886ba005f323b592d389fb47be", [:make], []}}
