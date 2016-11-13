@@ -66,6 +66,9 @@ defmodule Commerce.Billing.HttpRequest do
       |> URI.encode_query
   end
   
-  defp encode_body(_, params),
+  defp encode_body(:json, params),
     do: Poison.encode!(params)
+  
+  defp encode_body(_, params),
+    do: params
 end
