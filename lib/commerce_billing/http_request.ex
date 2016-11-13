@@ -8,8 +8,7 @@ defmodule Commerce.Billing.HttpRequest do
     %HttpRequest{
       method: method,
       url: url,
-      headers: [],
-      auth_mode: :none
+      headers: []
     }
   end
   
