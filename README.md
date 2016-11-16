@@ -22,23 +22,27 @@ Payment processing library for Elixir. Based on [Shopify's](http://shopify.com) 
 
 ```elixir
 alias Commerce.Billing
-alias Commerce.Billing.Response
+alias Billing.{CreditCard, Address, Worker, Gateways, Response}
 
 config = %{credentials: {"sk_test_BQokikJOvBiI2HlWgH4olfQ2", ""},
            default_currency: "USD"}
 
-Billing.Worker.start_link(Billing.Gateways.Stripe, config, name: :my_gateway)
+Worker.start_link(Gateways.Stripe, config, name: :my_gateway)
 
-card = %Billing.CreditCard{name: "John Smith",
-                            number: "4242424242424242",
-                            expiration: {2017, 12},
-                            cvc: "123"}
+card = %CreditCard{
+  name: "John Smith",
+  number: "4242424242424242",
+  expiration: {2017, 12},
+  cvc: "123"
+}
 
-address = %Billing.Address{street1: "123 Main",
-                            city: "New York",
-                            region: "NY",
-                            country: "US",
-                            postal_code: "11111"}
+address = %Address{
+  street1: "123 Main",
+  city: "New York",
+  region: "NY",
+  country: "US",
+  postal_code: "11111"
+}
 
 case Billing.authorize(:my_gateway, 199.95, card, billing_address: address,
                                                    description: "Amazing T-Shirt") do
@@ -66,7 +70,6 @@ end
     - Use primary gateway (i.e PayPal), but when PayPal is erroring switch to secondary/backup gateway (i.e. Authorize.net)
     - Currency specific gateway, i.e. use one gateway type for USD another for CAD
 - Retry on network failure
-
 
 ## License
 
