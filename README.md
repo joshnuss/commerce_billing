@@ -22,7 +22,7 @@ Payment processing library for Elixir. Based on [Shopify's](http://shopify.com) 
 
 ```elixir
 alias Commerce.Billing
-alias Billing.{CreditCard, Address, Worker, Gateways, Response}
+alias Billing.{CreditCard, Address, Worker, Gateways}
 
 config = %{credentials: {"sk_test_BQokikJOvBiI2HlWgH4olfQ2", ""},
            default_currency: "USD"}
@@ -46,13 +46,13 @@ address = %Address{
 
 case Billing.authorize(:my_gateway, 199.95, card, billing_address: address,
                                                    description: "Amazing T-Shirt") do
-  {:ok, %Response{authorization: authorization}} ->
+  {:ok,    %{authorization: authorization}} ->
     IO.puts("Payment authorized #{authorization}")
 
-  {:error, %Response{code: :declined, reason: reason}} ->
+  {:error, %{code: :declined, reason: reason}} ->
     IO.puts("Payment declined #{reason}")
 
-  {:error, %Response{code: error}} ->
+  {:error, %{code: error}} ->
     IO.puts("Payment error #{error}")
 end
 ```
