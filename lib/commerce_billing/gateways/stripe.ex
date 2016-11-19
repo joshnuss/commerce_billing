@@ -24,6 +24,8 @@ defmodule Commerce.Billing.Gateways.Stripe do
     Address,
     Response
   }
+  
+  alias Commerce.Billing.HttpRequest
 
   import Poison, only: [decode!: 1]
 
@@ -113,7 +115,10 @@ defmodule Commerce.Billing.Gateways.Stripe do
     config = Keyword.fetch!(opts, :config)
 
     method
-      |> http("#{@base_url}/#{path}", params, credentials: config.credentials)
+      |> HttpRequest.new("#{@base_url}/#{path}")
+      |> HttpRequest.put_body(params, :url_encoded)
+      |> HttpRequest.put_auth(:basic, config.credentials)
+      |> HttpRequest.send
       |> respond
   end
 
