@@ -5,6 +5,9 @@ defmodule Commerce.Billing.Gateways.Bogus do
     CreditCard,
     Response
   }
+  
+  def init(config),
+    do: config
 
   def authorize(_amount, _card_or_id, _opts),
     do: success

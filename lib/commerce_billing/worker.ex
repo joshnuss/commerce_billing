@@ -6,6 +6,8 @@ defmodule Commerce.Billing.Worker do
   end
 
   def init([gateway, config]) do
+    config = gateway.init(config)
+    
     {:ok, %{config: config, gateway: gateway}}
   end
 

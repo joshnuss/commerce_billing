@@ -27,6 +27,9 @@ defmodule Commerce.Billing.Gateways.Stripe do
 
   import Poison, only: [decode!: 1]
 
+  def init(config),
+    do: config
+
   def purchase(amount, card_or_id, opts),
     do: authorize(amount, card_or_id, [{:capture, true} | opts])
 
